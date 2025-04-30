@@ -154,10 +154,8 @@
     </div>
 
     <script>
-      // Store for all created juices
       const juiceStore = [];
 
-      // DOM Elements
       const juiceNameInput = document.getElementById("juice-name");
       const ingredientNameInput = document.getElementById("ingredient-name");
       const ingredientQuantityInput = document.getElementById(
@@ -173,12 +171,9 @@
       const nameError = document.getElementById("name-error");
       const ingredientError = document.getElementById("ingredient-error");
 
-      // Current ingredients
       let currentIngredients = [];
 
-      // Function to create a juice with ingredients and quantities
       const juiceMaker = (juiceName, ingredients) => {
-        // Create the juice object
         const newJuice = {
           name: juiceName,
           ingredients: ingredients,
@@ -186,10 +181,8 @@
           id: `juice-${Date.now()}`,
         };
 
-        // Add to juice store
         juiceStore.push(newJuice);
 
-        // Generate a description of the juice
         let description = `${juiceName} contains: `;
         ingredients.forEach((item, index) => {
           description += `${item.quantity} ${item.unit} of ${item.name}`;
@@ -205,13 +198,11 @@
         };
       };
 
-      // Add ingredient to the list
       addIngredientBtn.addEventListener("click", () => {
         const name = ingredientNameInput.value.trim();
         const quantity = parseInt(ingredientQuantityInput.value);
         const unit = ingredientUnitInput.value;
 
-        // Validate
         if (!name) {
           ingredientError.textContent = "Please enter an ingredient name";
           return;
@@ -219,10 +210,8 @@
 
         ingredientError.textContent = "";
 
-        // Add to current ingredients
         currentIngredients.push({ name, quantity, unit });
 
-        // Add to UI
         const ingredientItem = document.createElement("div");
         ingredientItem.className = "ingredient-item";
         ingredientItem.innerHTML = `
@@ -233,13 +222,11 @@
             `;
         ingredientsList.appendChild(ingredientItem);
 
-        // Clear inputs
         ingredientNameInput.value = "";
         ingredientQuantityInput.value = 1;
         ingredientUnitInput.value = "whole";
       });
 
-      // Delete ingredient
       ingredientsList.addEventListener("click", (e) => {
         if (e.target.classList.contains("delete-btn")) {
           const index = parseInt(e.target.getAttribute("data-index"));
@@ -248,7 +235,6 @@
         }
       });
 
-      // Render ingredients list
       const renderIngredientsList = () => {
         ingredientsList.innerHTML = "";
         currentIngredients.forEach((ingredient, index) => {
@@ -262,11 +248,9 @@
         });
       };
 
-      // Make juice
       makeJuiceBtn.addEventListener("click", () => {
         const juiceName = juiceNameInput.value.trim();
 
-        // Validate
         if (!juiceName) {
           nameError.textContent = "Please enter a juice name";
           return;
@@ -280,20 +264,16 @@
         nameError.textContent = "";
         ingredientError.textContent = "";
 
-        // Create juice
         const juiceResult = juiceMaker(juiceName, [...currentIngredients]);
 
-        // Show result
         juiceDescriptionP.textContent = juiceResult.description;
         resultDiv.style.display = "block";
 
-        // Add to juices list
         const juiceItem = document.createElement("div");
         juiceItem.className = "juice-item";
         juiceItem.textContent = juiceResult.description;
         juicesList.appendChild(juiceItem);
 
-        // Reset for next juice
         juiceNameInput.value = "";
         currentIngredients = [];
         renderIngredientsList();
